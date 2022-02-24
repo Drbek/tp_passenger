@@ -2,7 +2,7 @@ import copy
 from functions import getValidNumber
 from functions import generateId
 from functions import clear
-
+from defmodel import modelPassager
 def getPassager(lastIndex):
     print("-----------------------------------------------------------")
     print("----------------AJOUTER UN NOUVEAU PASSAGER----------------")
@@ -29,10 +29,10 @@ def getListPassager():
         confirm=input("Voulez ajouter un nouveau passager ? (oui/non) : ")
         if(confirm=="non") :
             continueRegister=False
-            clear()
+        clear()
     return listPassager
 #test
-#listP=getListPassager()
+listP=getListPassager()
 
 
 
