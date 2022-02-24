@@ -25,3 +25,17 @@ def generateId(number,type):
         return "{}{}".format(type,newNumber)
 #test 
 #print(generateId(int(input("Enter number : ")),input("Enter prefix : ")))
+
+from os import system, name
+from time import sleep
+def clear():
+   # for windows
+   if name == 'nt':
+      _ = system('cls')
+   # for mac and linux
+   else:
+    _ = system('clear')
+#test
+#print("Hi Learner!!")
+#sleep(5)
+#clear()
