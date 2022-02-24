@@ -139,6 +139,6 @@ def afficherMenu():
     print("6. LISTE DES PASSAGERS D'UN BUS")
     print("7. LISTE DES PASSAGERS DE LA FLOTTE")
     print("8. Y'A-TIL UN PASSAGER DANS MA FLOTTE ? ")
-    enter=getValidNumber("taper Ici____")
+    enter=input("taper Ici____ ")
     return enter
     
