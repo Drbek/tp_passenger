@@ -9,10 +9,14 @@ ListPassager=[]
 while choix!="q" :
     if(choix.isdigit() and len(choix)<=2):
         if(choix=="1"):
-           ListBus= createBus.getListBus()
+           a= createBus.getListBus()
+           for i in a:
+               ListBus.append(i)
            choix=functions.afficherMenu()
         elif(choix=="2"):
-            ListPassager=createPassager.getListPassager()
+            b=createPassager.getListPassager()
+            for k in b:
+                ListPassager.append(k)
             choix=functions.afficherMenu()
         elif(choix=="3"):
             bus=functions.getBusByMatricule(ListBus)

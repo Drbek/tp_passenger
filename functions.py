@@ -188,13 +188,13 @@ def afficherPassager(passager):
     print("-------{}----------".format(passager["Id"]))
     print("NOM : "+passager["nom"]+" "+passager["prenom"])
     print("POIDS BAGGAGE : "+passager["poidsBaggage"]+"KG")
-    print("-------------------")
+    #print("-------------------")
 #cette fonction affiche un bus sur la console
 def afficherBus(bus):
     print("-------{}----------".format(bus["matricule"]))
     print("NOMBRE DE PLACE : "+bus["nombrePlace"])
     print("POIDS Max : "+bus["poidsMax"]+"KG")
-    print("-------------------")
+   # print("-------------------")
 #cette fonction verifi si un passager est dans la flotte puis returne les donnees du pasager dans le cas contraire elle retourne 0
 def isPassagerIsIntoFlotte(passager,ListBus):
     modelData={"bus":None,"passager":None}
