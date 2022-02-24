@@ -15,13 +15,18 @@ while choix!="q" :
             ListPassager=createPassager.getListPassager()
             choix=functions.afficherMenu()
         elif(choix=="3"):
-           
             bus=functions.getBusByMatricule(ListBus)
             passager=functions.getPassagerById(ListPassager,False)
-            if(functions.isPlaceAvailable(bus) and not functions.isPoidsOverFlow(passager,bus)):
-                functions.addPassagerTobus(passager,bus)
-            else:
-                print("Manque de place ou d'espace pour les baggages!!")
+            data=functions.isPassagerIsIntoFlotte(passager,ListBus)
+            if(data==0 and passager!=0):
+                if(functions.isPlaceAvailable(bus) and not functions.isPoidsOverFlow(passager,bus)):
+                    functions.addPassagerTobus(passager,bus)
+                else:
+                    print("Manque de place ou d'espace pour les baggages!!")
+            else :
+                if(data!=0):
+                    print("----Passager est deja dans le bus {}-----".format(data["bus"]["matricule"]))
+
             sleep(6)
             choix=functions.afficherMenu()
         elif(choix=="4"):
@@ -62,27 +67,23 @@ while choix!="q" :
             if(passager==0) :
                 print("Passager nexiste pas !!".format())
                 sleep(3)
+                choix=functions.afficherMenu()
             else:
                 count=0
-                myBus=None
-                for bus in ListBus:
-                    for x in bus["passagers"]:
-                        if passager["Id"]==x["Id"]:
-                            functions.afficherPassager(passager)
-                            sleep(3)
-                            count+=1
-                            break
-                    myBus=bus
-                if(count==0):
+                data=functions.isPassagerIsIntoFlotte(passager,ListBus)
+                if(data==0):
                     print("----Passager n'est dans la flotte!!-----")
-            print("------LE PASSAGER {} APPARTIENT AU BUS SUIVANT------".format(passager["Id"]))
-            choix=functions.afficherBus(myBus)
+                else:
+                  print("------LE PASSAGER {} APPARTIENT AU BUS SUIVANT------".format(data["passager"]["Id"]))
+                  functions.afficherBus(data["bus"])
+                sleep(6)
+                choix=functions.afficherMenu()
         elif(choix=="9"):
             bus=functions.getBusByMatricule(ListBus)
             if(bus!=0):
                 nbKg=functions.numberOfWeigthAvailable(bus)
                 print("le nombre de KG reservé pour le bus {} est {} ".format(bus["matricule"],nbKg))
-                sleep(3)
+                sleep(6)
                 choix=functions.afficherMenu()
             else:
                 choix=functions.afficherMenu()
@@ -93,3 +94,12 @@ while choix!="q" :
                 print("---------Pas de bus!!!!-----------")
             sleep(6)
             choix=input("taper ici____ ")
+        elif(choix=="11"):
+            for pas in ListPassager:
+                functions.afficherPassager(pas)
+            if(len(ListPassager)==0):
+                print("---------Pas de passager!!!!-----------")
+            sleep(6)
+            choix=input("taper ici____ ")
+        else:
+            choix=functions.afficherMenu()
