@@ -49,28 +49,28 @@ def addPassagerTobus(passager,bus):
         print("something wrong happened!!")
 def isPlaceAvailable(bus):
     result=False
-    if bus["nombrePlace"]>len(bus["passagers"]):
+    if int(bus["nombrePlace"])>len(bus["passagers"]):
         result=True
     return result
 def isPoidsOverFlow(passager,bus) :
     result=False
     summe=0
     for x in bus["passagers"]:
-        summe+=x["poidsBaggage"]
-    if (bus["poidsMax"]<(summe+passager["poidsBaggage"])):
+        summe+=int(x["poidsBaggage"])
+    if (int(bus["poidsMax"])<(summe+int(passager["poidsBaggage"]))):
         result=True
     return result
 def numberOfAvailablePlace(bus):
-    if bus["nombrePlace"]>len(bus["passagers"]):
-        return (bus["nombrePlace"]-len(bus["passagers"]))
+    if int(bus["nombrePlace"])>len(bus["passagers"]):
+        return (int(bus["nombrePlace"])-len(bus["passagers"]))
     else:
         return 0
 def numberOfWeigthAvailable(bus):
     summe=0
     for x in bus["passagers"]:
-        summe+=x["poidsBaggage"]
-    if (bus["poidsMax"]>(summe)):
-        return bus["poidsMax"]-(summe)
+        summe+=int(x["poidsBaggage"])
+    if (int(bus["poidsMax"])>(summe)):
+        return int(bus["poidsMax"])-(summe)
     else:
         return 0
 def removePassagerInBus(passager,bus):
@@ -85,6 +85,33 @@ def isPassagerIntoBus(passager,bus):
         if x["Id"]==passager["Id"]:
             result=True
             break
+    return result
+def getBusByMatricule(listBus):
+    result=0
+    choixBus=input("Entrer le matricule du bus : ")
+    for x in listBus:
+        if(x["matricule"]==choixBus):
+            result=x
+            break
+    while(result==0):
+        choixBus=input("Entrer un matricule correct (BUS-XX)(bus {} inexistant) : ".format(choixBus))
+        for x in listBus:
+            if(x["matricule"]==choixBus):
+                result=x
+                break
+    return result
+def getPassagerById(listPassager):
+    result=0
+    choixPassager=input("Entrer l'ID du passager : ")
+    for x in listPassager:
+        if(x["Id"]==choixPassager):
+            result=x
+    
+    while(result==0):
+        choixPassager=input("Entrer ID correct (PAXX)(Passager {} inexistant) : ".format(choixPassager))
+        for x in listPassager:
+            if(x["Id"]==choixPassager):
+                result=x
     return result
 #test 
 """ Passager1={
