@@ -32,7 +32,7 @@ def getListPassager():
         clear()
     return listPassager
 #test
-listP=getListPassager()
+#listP=getListPassager()
 
 
 
