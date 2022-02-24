@@ -126,3 +126,19 @@ modelBus2={
 #print(modelBus1)
 #r=isPassagerIntoBus(Passager1,modelBus1)
 #print(r)
+def afficherMenu():
+    clear()
+    print("----------------------------------------------------------------------")
+    print("-------------------GESTION DES AGENCES DE VOYAGES---------------------")
+    print("----------------------------------------------------------------------")
+    print("1. CREER UN BUS")
+    print("2. CREER UN PASSAGER")
+    print("3. AJOUTER UN PASSAGER DANS UN BUS")
+    print("4. VERIFIER LE NOMBRE DE PLACE D'UN BUS")
+    print("5. RETIRER UN PASSAGER DANS BUS")
+    print("6. LISTE DES PASSAGERS D'UN BUS")
+    print("7. LISTE DES PASSAGERS DE LA FLOTTE")
+    print("8. Y'A-TIL UN PASSAGER DANS MA FLOTTE ? ")
+    enter=getValidNumber("taper Ici____")
+    return enter
+    
