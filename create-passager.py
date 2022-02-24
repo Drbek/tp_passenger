@@ -2,12 +2,7 @@ import copy
 from functions import getValidNumber
 from functions import generateId
 from functions import clear
-modelPassager={
-    "Id":None,
-    "nom":None,
-    "prenom":None,
-    "poidsBaggage":None
-}
+
 def getPassager(lastIndex):
     print("-----------------------------------------------------------")
     print("----------------AJOUTER UN NOUVEAU PASSAGER----------------")
