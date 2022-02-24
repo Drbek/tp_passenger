@@ -4,3 +4,9 @@ modelBus={
     "poidsMax":0,
     "passagers":[]
 }
+modelPassager={
+    "Id":None,
+    "nom":None,
+    "prenom":None,
+    "poidsBaggage":None
+}
