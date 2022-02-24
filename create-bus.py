@@ -2,6 +2,7 @@ import copy
 from functions import getValidNumber
 from functions import generateId
 from functions import clear
+from defmodel import modelBus
 def getBus(lastIndex):
     print("-----------------------------------------------------------")
     print("----------------AJOUTER UN NOUVEAU BUS---------------------")
@@ -29,7 +30,7 @@ def getListBus():
         clear()
     return listBus
 #test
-listP=getListBus()
+#listP=getListBus()
 
 
 
