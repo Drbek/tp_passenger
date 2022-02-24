@@ -2,12 +2,6 @@ import copy
 from functions import getValidNumber
 from functions import generateId
 from functions import clear
-modelBus={
-    "matricule":None,
-    "nombrePlace":0,
-    "poidsMax":0,
-    "passagers":[]
-}
 def getBus(lastIndex):
     print("-----------------------------------------------------------")
     print("----------------AJOUTER UN NOUVEAU BUS---------------------")
