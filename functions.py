@@ -40,8 +40,13 @@ def clear():
 #print("Hi Learner!!")
 #sleep(5)
 #clear()
+
 def addPassagerTobus(passager,bus):
-    bus["passagers"].append(passager)
+    if(not isPassagerIntoBus(passager,bus)):
+        bus["passagers"].append(passager)
+        print("Passager {} ({}) is added into bus {} ".format(passager["Id"],passager["nom"],bus["matricule"]))
+    else:
+        print("something wrong happened!!")
 def isPlaceAvailable(bus):
     result=False
     if bus["nombrePlace"]>len(bus["passagers"]):
@@ -71,7 +76,7 @@ def numberOfWeigthAvailable(bus):
 def removePassagerInBus(passager,bus):
     if(isPassagerIntoBus(passager,bus)):
         bus["passagers"].remove(passager)
-        print("Passager {} removed from bus {} ".format(passager["Id"],bus["Id"]))
+        print("Passager {} ({}) removed from bus {} ".format(passager["Id"],passager["nom"],bus["matricule"]))
     else:
         print("Passager doesnt exist on bus")
 def isPassagerIntoBus(passager,bus):
@@ -81,3 +86,43 @@ def isPassagerIntoBus(passager,bus):
             result=True
             break
     return result
+#test 
+""" Passager1={
+    "Id":"PA001",
+    "nom":"Bekono",
+    "prenom":"Roland",
+    "poidsBaggage":15
+}
+Passager2={
+    "Id":"PA002",
+    "nom":"Ngono",
+    "prenom":"martin",
+    "poidsBaggage":2
+}
+modelBus1={
+    "matricule":"BUS-01",
+    "nombrePlace":70,
+    "poidsMax":18,
+    "passagers":[Passager2]
+}
+modelBus2={
+    "matricule":"BUS-02",
+    "nombrePlace":10,
+    "poidsMax":8,
+    "passagers":[Passager1]
+} """
+#addPassagerTobus(Passager1,modelBus1)
+#print(modelBus1)
+#r=isPlaceAvailable(modelBus1)
+#r=isPoidsOverFlow(Passager1,modelBus1)
+#print(r)
+#r=numberOfAvailablePlace(modelBus1)
+#print(r)
+#print(modelBus1)
+#t=numberOfWeigthAvailable(modelBus1)
+#print(t)
+#print(modelBus1)
+#removePassagerInBus(Passager2,modelBus1)
+#print(modelBus1)
+#r=isPassagerIntoBus(Passager1,modelBus1)
+#print(r)
