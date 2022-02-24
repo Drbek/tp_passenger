@@ -93,21 +93,21 @@ def getBusByMatricule(listBus):
         if(x["matricule"]==choixBus):
             result=x
             break
-    while(result==0):
+    while(result==0  and choixBus!="q"):
         choixBus=input("Entrer un matricule correct (BUS-XX)(bus {} inexistant) : ".format(choixBus))
         for x in listBus:
             if(x["matricule"]==choixBus):
                 result=x
                 break
     return result
-def getPassagerById(listPassager):
+def getPassagerById(listPassager,isOnTime):
     result=0
     choixPassager=input("Entrer l'ID du passager : ")
     for x in listPassager:
         if(x["Id"]==choixPassager):
             result=x
     
-    while(result==0):
+    while(result==0 and isOnTime==False and choixPassager!="q"):
         choixPassager=input("Entrer ID correct (PAXX)(Passager {} inexistant) : ".format(choixPassager))
         for x in listPassager:
             if(x["Id"]==choixPassager):
@@ -166,6 +166,17 @@ def afficherMenu():
     print("6. LISTE DES PASSAGERS D'UN BUS")
     print("7. LISTE DES PASSAGERS DE LA FLOTTE")
     print("8. Y'A-TIL UN PASSAGER DANS MA FLOTTE ? ")
+    print("9. QUEL EST LE NOMBRE KG RESERVE POUR UN BUS ? ")
+    print("10. LISTE DES BUS ")
     enter=input("taper Ici____ ")
     return enter
-    
+def afficherPassager(passager):
+    print("-------{}----------".format(passager["Id"]))
+    print("NOM : "+passager["nom"]+" "+passager["prenom"])
+    print("POIDS BAGGAGE : "+passager["poidsBaggage"]+"KG")
+    print("-------------------")
+def afficherBus(bus):
+    print("-------{}----------".format(bus["matricule"]))
+    print("NOMBRE DE PLACE : "+bus["nombrePlace"])
+    print("POIDS Max : "+bus["poidsMax"]+"KG")
+    print("-------------------")
