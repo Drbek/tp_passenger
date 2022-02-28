@@ -2,27 +2,36 @@ import functions
 import createBus
 import createPassager
 from time import sleep
-choix = functions.afficherMenu()
+from connectDb import connectBD
+from prettytable import PrettyTable
+#cette fonction affiche un passager sur la console
+db=connectBD()
+if(db==0):
+    print("-----------Echec de connexion à la base de donnée!!------------------")
+    exit()
+choix=functions.afficherMenu()
 print("\n")
 ListBus = []
 ListPassager = []
 while choix!="q" :
     if(choix.isdigit() and len(choix)<=2):
-        if(choix == "1"):
-           a = createBus.getListBus()
-           for i in a:
-               ListBus.append(i)
-           choix = functions.afficherMenu()
-        elif(choix == "2"):
-            b = createPassager.getListPassager()
-            for k in b:
-                ListPassager.append(k)
-            choix = functions.afficherMenu()
-        elif(choix == "3"):
-            bus = functions.getBusByMatricule(ListBus)
-            passager = functions.getPassagerById(ListPassager,False)
-            data = functions.isPassagerIsIntoFlotte(passager,ListBus)
-            if(data == 0 and passager != 0):
+        if(choix=="1"):
+           a= createBus.getListBus()
+           #for i in a:
+           #   ListBus.append(i)
+           db["bus"].insert_many(a)
+           choix=functions.afficherMenu()
+        elif(choix=="2"):
+            b=createPassager.getListPassager()
+            #for k in b:
+            #    ListPassager.append(k)
+            db["passager"].insert_many(b)
+            choix=functions.afficherMenu()
+        elif(choix=="3"):
+            bus=functions.getBusByMatricule()
+            passager=functions.getPassagerById(False)
+            data=functions.isPassagerIsIntoFlotte(passager)
+            if(data==0 and passager!=0):
                 if(functions.isPlaceAvailable(bus) and not functions.isPoidsOverFlow(passager,bus)):
                     functions.addPassagerTobus(passager,bus)
                 else:
@@ -34,19 +43,19 @@ while choix!="q" :
             sleep(6)
             choix=functions.afficherMenu()
         elif(choix=="4"):
-            bus=functions.getBusByMatricule(ListBus)
+            bus=functions.getBusByMatricule()
             nbPlace=functions.numberOfAvailablePlace(bus)
             print("le nombre de place disponible pour le bus {} est {} ".format(bus["matricule"],nbPlace))
             sleep(6)
             choix=functions.afficherMenu()
         elif(choix=="5"):
-            bus=functions.getBusByMatricule(ListBus)
-            passager=functions.getPassagerById(ListPassager,False)
+            bus=functions.getBusByMatricule()
+            passager=functions.getPassagerById(False)
             functions.removePassagerInBus(passager,bus)
             sleep(6)
             choix=functions.afficherMenu()
         elif(choix=="6"):
-            bus=functions.getBusByMatricule(ListBus)
+            bus=functions.getBusByMatricule()
             count=0
             for passager in bus["passagers"]:
                     functions.afficherPassager(passager)
@@ -57,6 +66,7 @@ while choix!="q" :
             choix=functions.afficherMenu()
         elif(choix=="7"):
            # print(ListPassager)
+            ListBus=db["bus"].find({})
             count=0
             for bus in ListBus:
                 for passager in bus["passagers"]:
@@ -67,14 +77,14 @@ while choix!="q" :
             sleep(6)
             choix=functions.afficherMenu()
         elif(choix=="8"):
-            passager=functions.getPassagerById(ListPassager,True)
+            passager=functions.getPassagerById(False)
             if(passager==0) :
                 print("Passager nexiste pas !!".format())
                 sleep(3)
                 choix=functions.afficherMenu()
             else:
                 count=0
-                data=functions.isPassagerIsIntoFlotte(passager,ListBus)
+                data=functions.isPassagerIsIntoFlotte(passager)
                 if(data==0):
                     print("----Passager n'est dans la flotte!!-----")
                 else:
@@ -83,7 +93,7 @@ while choix!="q" :
                 sleep(6)
                 choix=functions.afficherMenu()
         elif(choix=="9"):
-            bus=functions.getBusByMatricule(ListBus)
+            bus=functions.getBusByMatricule()
             if(bus!=0):
                 nbKg=functions.numberOfWeigthAvailable(bus)
                 print("le nombre de KG reservé pour le bus {} est {} ".format(bus["matricule"],nbKg))
@@ -92,18 +102,30 @@ while choix!="q" :
             else:
                 choix=functions.afficherMenu()
         elif(choix=="10"):
+            ListBus=db["bus"].find({})
+            x = PrettyTable()
+            x.field_names = ["Matricule", "Place", "Poids max"]
+            nbbus=0
             for bus in ListBus:
-                functions.afficherBus(bus)
-            if(len(ListBus)==0):
+                #functions.afficherBus(bus)
+                x.add_row([bus["matricule"], bus["nombrePlace"], bus["poidsMax"]])
+                nbbus+=1
+            if(nbbus==0):
                 print("---------Pas de bus!!!!-----------")
-            sleep(6)
+            print(x)
             choix=input("taper ici____ ")
         elif(choix=="11"):
+            ListPassager=db["passager"].find({})
+            x = PrettyTable()
+            x.field_names = ["ID", "Nom", "Prénom","Poids des baggages"]
+            nbpas=0
             for pas in ListPassager:
-                functions.afficherPassager(pas)
-            if(len(ListPassager)==0):
+                #functions.afficherPassager(pas)
+                x.add_row([pas["Id"], pas["nom"], pas["prenom"],pas["poidsBaggage"]])
+                nbpas+=1
+            if(nbpas==0):
                 print("---------Pas de passager!!!!-----------")
-            sleep(6)
+            print(x)
             choix=input("taper ici____ ")
         else:
             choix=functions.afficherMenu()

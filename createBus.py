@@ -18,16 +18,25 @@ def getBus(lastIndex):
 #passa=getPassager(0)
 #clear()
 #print(passa)
+from connectDb import connectBD
 def getListBus():
     listBus=[]
+    db=connectBD()
+    lastDoc=db["bus"].find().limit(1).sort("_id",-1)
+    leng=0
+    for doc in lastDoc:
+     index=doc["matricule"].replace("BUS-","") 
+     if index.isdigit() :
+         leng=int(index)
     continueRegister=True
     while continueRegister :
-        bus=getBus(len(listBus))
+        bus=getBus(leng)
         listBus.append(bus)
         confirm=input("Voulez ajouter un nouveau bus ? (oui/non) : ")
         if(confirm=="non") :
             continueRegister=False
         clear()
+        leng+=1
     return listBus
 #test
 #listP=getListBus()
