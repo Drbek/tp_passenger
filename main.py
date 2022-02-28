@@ -2,27 +2,27 @@ import functions
 import createBus
 import createPassager
 from time import sleep
-choix=functions.afficherMenu()
+choix = functions.afficherMenu()
 print("\n")
-ListBus=[]
-ListPassager=[]
+ListBus = []
+ListPassager = []
 while choix!="q" :
     if(choix.isdigit() and len(choix)<=2):
-        if(choix=="1"):
-           a= createBus.getListBus()
+        if(choix == "1"):
+           a = createBus.getListBus()
            for i in a:
                ListBus.append(i)
-           choix=functions.afficherMenu()
-        elif(choix=="2"):
-            b=createPassager.getListPassager()
+           choix = functions.afficherMenu()
+        elif(choix == "2"):
+            b = createPassager.getListPassager()
             for k in b:
                 ListPassager.append(k)
-            choix=functions.afficherMenu()
-        elif(choix=="3"):
-            bus=functions.getBusByMatricule(ListBus)
-            passager=functions.getPassagerById(ListPassager,False)
-            data=functions.isPassagerIsIntoFlotte(passager,ListBus)
-            if(data==0 and passager!=0):
+            choix = functions.afficherMenu()
+        elif(choix == "3"):
+            bus = functions.getBusByMatricule(ListBus)
+            passager = functions.getPassagerById(ListPassager,False)
+            data = functions.isPassagerIsIntoFlotte(passager,ListBus)
+            if(data == 0 and passager != 0):
                 if(functions.isPlaceAvailable(bus) and not functions.isPoidsOverFlow(passager,bus)):
                     functions.addPassagerTobus(passager,bus)
                 else:
