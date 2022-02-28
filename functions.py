@@ -1,3 +1,4 @@
+from connectDb import connectBD
 #cette fonction permet de vverifier si un nombre est nombre est un floatant ou un entier
 def is_float(str):
     result=False
@@ -46,6 +47,11 @@ def clear():
 def addPassagerTobus(passager,bus):
     if(not isPassagerIntoBus(passager,bus)):
         bus["passagers"].append(passager)
+        myquery = { "matricule":bus["matricule"] }
+        newvalues = { "$set": { "passagers": bus["passagers"] } }
+        db=connectBD()
+        t = db["bus"].update_one(myquery,newvalues)
+        print(t)
         print("Passager {} ({}) is added into bus {} ".format(passager["Id"],passager["nom"],bus["matricule"]))
     else:
         print("something wrong happened!!")
@@ -82,48 +88,55 @@ def numberOfWeigthAvailable(bus):
 #cette enlève un passager dans un bus
 def removePassagerInBus(passager,bus):
     if(isPassagerIntoBus(passager,bus)):
+        query={"matricule":bus["matricule"],"passagers":{"$elemMatch":{"Id":passager["Id"]}}}
         bus["passagers"].remove(passager)
+        newValue={ "$set": {"passagers":bus["passagers"]}}
+        db=connectBD()
+        t=db["bus"].update_one(query,newValue)
+        print(t)
+        #bus["passagers"].remove(passager)
         print("Passager {} ({}) removed from bus {} ".format(passager["Id"],passager["nom"],bus["matricule"]))
     else:
         print("Passager doesnt exist on bus")
 #cette fonction verifie si un passager est dans un bus
 def isPassagerIntoBus(passager,bus):
     result=False
-    for x in bus["passagers"]:
-        if x["Id"]==passager["Id"]:
-            result=True
-            break
+    db=connectBD()
+    t=db["bus"].find_one({"matricule":bus["matricule"],"passagers":{"$elemMatch":{"Id":passager["Id"]}}})
+    if(t!=None):
+        result=True
+    #for x in bus["passagers"]:
+        #if x["Id"]==passager["Id"]:
+            #result=True
+            #break
     return result
 #fonction qui permet d'obtenir un bus a partir du matricule . Elle retourne 0 si le bus nexiste pas
-def getBusByMatricule(listBus):
+def getBusByMatricule():
     result=0
     choixBus=input("Entrer le matricule du bus : ")
-    for x in listBus:
-        if(x["matricule"]==choixBus):
-            result=x
-            break
-    while(result==0  and choixBus!="q"):
+    db=connectBD()
+    result=db["bus"].find_one({"matricule":choixBus})
+    while(result==None  and choixBus!="q"):
         choixBus=input("Entrer un matricule correct (BUS-XX)(bus {} inexistant) : ".format(choixBus))
-        for x in listBus:
-            if(x["matricule"]==choixBus):
-                result=x
-                break
+        result=db["bus"].find_one({"matricule":choixBus})
     return result
 #fonction qui permet d'obtenir un passager a partir de ID . Elle retourne 0 si le paasger nexiste pas
-def getPassagerById(listPassager,isOnTime):
+def getPassagerById(isOnTime):
     result=0
     choixPassager=input("Entrer l'ID du passager : ")
-    for x in listPassager:
-        if(x["Id"]==choixPassager):
-            result=x
-    
-    while(result==0 and isOnTime==False and choixPassager!="q"):
+    #for x in listPassager:
+        #if(x["Id"]==choixPassager):
+            #result=x
+    db=connectBD()
+    result=db["passager"].find_one({"Id":choixPassager})
+
+    while(result==None and isOnTime==False and choixPassager!="q"):
         choixPassager=input("Entrer ID correct (PAXX)(Passager {} inexistant) : ".format(choixPassager))
-        for x in listPassager:
-            if(x["Id"]==choixPassager):
-                result=x
+        result=db["passager"].find_one({"Id":choixPassager})
+    #print(result)
     return result
 #test 
+#getBusByMatricule()
 """ Passager1={
     "Id":"PA001",
     "nom":"Bekono",
@@ -183,7 +196,6 @@ def afficherMenu():
     print("11. LISTE DES PASSAGERS ")
     enter=input("taper Ici____ ")
     return enter
-#cette fonction affiche un passager sur la console
 def afficherPassager(passager):
     print("-------{}----------".format(passager["Id"]))
     print("NOM : "+passager["nom"]+" "+passager["prenom"])
@@ -196,9 +208,10 @@ def afficherBus(bus):
     print("POIDS Max : "+bus["poidsMax"]+"KG")
    # print("-------------------")
 #cette fonction verifi si un passager est dans la flotte puis returne les donnees du pasager dans le cas contraire elle retourne 0
-def isPassagerIsIntoFlotte(passager,ListBus):
+def isPassagerIsIntoFlotte(passager):
     modelData={"bus":None,"passager":None}
-
+    db=connectBD()
+    ListBus=db["bus"].find({})
     myBus=None
     result=0
     count=0

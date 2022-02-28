@@ -1,4 +1,5 @@
 import copy
+from connectDb import connectBD
 from functions import getValidNumber
 from functions import generateId
 from functions import clear
@@ -22,14 +23,22 @@ def getPassager(lastIndex):
 #print(passa)
 def getListPassager():
     listPassager=[]
+    db=connectBD()
+    lastDoc=db["passager"].find().limit(1).sort("_id",-1)
+    leng=0
+    for doc in lastDoc:
+     index=doc["Id"].replace("PA","") 
+     if index.isdigit() :
+         leng=int(index)
     continueRegister=True
     while continueRegister :
-        passager=getPassager(len(listPassager))
+        passager=getPassager(leng)
         listPassager.append(passager)
         confirm=input("Voulez ajouter un nouveau passager ? (oui/non) : ")
         if(confirm=="non") :
             continueRegister=False
         clear()
+        leng+=1
     return listPassager
 #test
 #listP=getListPassager()
